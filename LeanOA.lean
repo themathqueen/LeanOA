@@ -23,11 +23,13 @@ import LeanOA.Mathlib.Analysis.Complex.Basic
 import LeanOA.Mathlib.Analysis.Convex.Extreme
 import LeanOA.Mathlib.Analysis.InnerProductSpace.Basic
 import LeanOA.Mathlib.Analysis.Normed.Extreme
+import LeanOA.Mathlib.Analysis.RCLike.ContinuousMap
 import LeanOA.Mathlib.Analysis.RCLike.Extend
 import LeanOA.Mathlib.LinearAlgebra.Complex.Module
 import LeanOA.Mathlib.Misc
 import LeanOA.Mathlib.Topology.ContinuousMap.Bounded.Normed
 import LeanOA.Mathlib.Topology.ContinuousMap.Compact
+import LeanOA.Mathlib.Topology.ContinuousMap.ContinuousMapZero
 import LeanOA.Mathlib.Topology.Order.LeftRightNhds
 import LeanOA.Notation
 import LeanOA.PositiveContinuousLinearMap
