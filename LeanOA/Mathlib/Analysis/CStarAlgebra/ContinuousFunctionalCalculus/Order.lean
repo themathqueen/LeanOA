@@ -27,9 +27,8 @@ lemma IsStarProjection.mul_right_eq_self_of_nonneg_of_le {a e : A} (he : IsStarP
   suffices sqrt a * (1 - e : A⁺¹) = 0 by
     rw [mul_sub, sub_eq_zero, mul_one, ← inr_mul, inr_injective.eq_iff] at this
     rw [nonneg_iff_eq_sqrt_mul_sqrt.mp ha, mul_assoc, ← this]
-  rw [← CStarRing.star_mul_self_eq_zero_iff, star_mul, (sqrt_nonneg a).inr.star_eq, mul_assoc]
-  simp_rw [← mul_assoc ((sqrt a : A) : A⁺¹), ← inr_mul, ← nonneg_iff_eq_sqrt_mul_sqrt.mp ha]
-  rw [← mul_assoc]
+  rw [← CStarRing.star_mul_self_eq_zero_iff, star_mul, (sqrt_nonneg a).inr.star_eq, mul_assoc,
+    ← mul_assoc ((sqrt a : A) : A⁺¹), ← inr_mul, ← nonneg_iff_eq_sqrt_mul_sqrt.mp ha, ← mul_assoc]
   apply le_antisymm (le_of_le_of_eq (star_left_conjugate_le_conjugate
     (inr_le_iff a e |>.mpr hae) _) _) (star_left_conjugate_nonneg (by simpa) _)
   simp [mul_assoc, (he.inr (R := ℂ)).mul_one_sub_self]

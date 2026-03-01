@@ -251,11 +251,10 @@ theorem isStarProjection_iff_mem_extremePoints_nonneg_and_mem_closedUnitBall
     fun a ha ha1 b hb hb1 ⟨t, s, h0t, h0s, hts, hlin⟩ ↦ ?_⟩, fun ⟨⟨h1, h2⟩, h3⟩ ↦ ?_⟩
   · have : t • (e * ((1 - a : A⁺¹) * e)) + s • (e * ((1 - b) * e)) =
         (t + s) • e - e * (t • a + s • b) * e := by
-      simp [smul_sub, sub_add_eq_add_sub, add_sub, ← add_smul, hts, sub_mul, mul_sub, he.inr.1.eq,
-        mul_add, add_mul, sub_sub, mul_assoc]
+      simp [smul_sub, sub_add_eq_add_sub, add_sub, ← add_smul, hts, sub_mul, mul_sub,
+        he.inr.isIdempotentElem.eq, mul_add, add_mul, sub_sub, mul_assoc]
     have : ((t + s) • e - e * (t • a + s • b) * e : A⁺¹) = 0 := by
-      simp only [← inr_smul, ← inr_add, ← inr_sub, ← inr_mul]
-      rw [hts, one_smul, hlin, he.1, he.1, sub_self, inr_zero]
+      simp [← inr_smul, ← inr_add, ← inr_mul, hts, hlin, he.isIdempotentElem.eq]
     have H {q : ℝ} {c : A} (hq : 0 < q) (h0c : 0 ≤ c) (hc1 : ‖c‖ ≤ 1) :
         0 ≤ q • (e * ((1 - c : A⁺¹) * e)) := by
       rw [← smul_zero q, smul_le_smul_iff_of_pos_left hq, ← mul_assoc]
@@ -266,10 +265,9 @@ theorem isStarProjection_iff_mem_extremePoints_nonneg_and_mem_closedUnitBall
     have := he.conjugate_of_nonneg_of_le (a := t • a) (by positivity)
       (by simpa [hlin] using le_add_of_nonneg_right (a := t • a) (by positivity : 0 ≤ s • b))
     rw [mul_smul_comm, smul_mul_assoc] at this
-    have h : e * (e - a * e) = 0 := by
-      rwa [← inr_injective (R := ℂ) |>.eq_iff, inr_mul, inr_sub, inr_mul, ← one_sub_mul, inr_zero]
-    rwa [mul_sub, ← mul_assoc, he.1,
-      h0t.ne'.isUnit.smul_left_cancel.mp this, sub_eq_zero, eq_comm] at h
+    have h : e * (e - a * e) = 0 := by rw [← (inr_injective (R := ℂ)).eq_iff]; simpa [← one_sub_mul]
+    rwa [mul_sub, ← mul_assoc, he.isIdempotentElem, h0t.ne'.isUnit.smul_left_cancel.mp this,
+      sub_eq_zero, eq_comm] at h
   · have := calc
       0 ≤ (e : A⁺¹) * (2 - e) := by
         have : (e : A⁺¹) ≤ 1 := by
