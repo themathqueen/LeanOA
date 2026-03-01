@@ -125,6 +125,13 @@ lemma Ultraweak.eval_continuous (p : P) :
     Continuous fun m : σ(M, P)_𝕜 ↦ (Predual.equivDual (𝕜 := 𝕜) (ofUltraweak m)) p :=
   WeakBilin.eval_continuous _ p
 
+/-- The ultraweak topology is weaker than the norm topology. -/
+@[fun_prop]
+lemma continuous_toUltraweak : Continuous (toUltraweak 𝕜 P : M → σ(M, P)_𝕜) :=
+  continuous_of_continuous_eval fun p ↦ by
+    change Continuous (ContinuousLinearMap.apply 𝕜 𝕜 p ∘ Predual.equivDual)
+    fun_prop
+
 variable (𝕜 M P) in
 /-- The canonical continuous linear equivalence between `σ(M, P)_𝕜` and `WeakDual 𝕜 P`. -/
 noncomputable def Ultraweak.weakDualCLE : σ(M, P)_𝕜 ≃L[𝕜] WeakDual 𝕜 P where
@@ -196,7 +203,7 @@ lemma toUltraweak_mul (x y : M) :
 variable (M P) in
 /-- The canonical ring equivalence between `σ(M, P)` and `M`. -/
 @[simps]
-noncomputable def ofUltraweak_ringEquiv : σ(M, P) ≃+* M where
+noncomputable def ringEquiv : σ(M, P) ≃+* M where
   toFun := ofUltraweak
   invFun := toUltraweak ℂ P
   map_mul' _ _ := rfl
@@ -247,6 +254,17 @@ lemma isSelfAdjoint_toUltraweak {x : M} :
 alias ⟨_root_.IsSelfAdjoint.of_toUltraweak, _root_.IsSelfAdjoint.toUltraweak⟩
   := isSelfAdjoint_toUltraweak
 
+variable (M P) in
+/-- The canonical ⋆-algebra equivalence between `σ(M, P)` and `M`.
+
+This comes *before* `algEquiv` because unlike the `AlgEquiv` type, `StarAlgEquiv`
+doesn't require the algebra to be unital.
+-/
+@[simps!]
+noncomputable def starAlgEquiv : σ(M, P) ≃⋆ₐ[ℂ] M :=
+  { linearEquiv ℂ M P, ringEquiv M P with
+    map_star' _ := rfl }
+
 end StarRing
 
 section StarModule
@@ -260,18 +278,22 @@ open scoped ComplexStarModule
 /-- The star module structure on `σ(M, P)` it inherits from `M`. -/
 scoped instance : StarModule ℂ σ(M, P) := inferInstanceAs (StarModule ℂ M)
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma ofUltraweak_realPart (a : σ(M, P)) :
     ofUltraweak (ℜ a : σ(M, P)) = ℜ (ofUltraweak a) := rfl
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma toUltraweak_realPart (a : M) :
     toUltraweak ℂ P (ℜ a : M) = ℜ (toUltraweak ℂ P a) := rfl
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma ofUltraweak_imaginaryPart (a : σ(M, P)) :
     ofUltraweak (ℑ a : σ(M, P)) = ℑ (ofUltraweak a) := rfl
 
+set_option backward.isDefEq.respectTransparency false in
 @[simp]
 lemma toUltraweak_imaginaryPart (a : M) :
     toUltraweak ℂ P (ℑ a : M) = ℑ (toUltraweak ℂ P a) := rfl
@@ -416,11 +438,6 @@ noncomputable def algEquiv : σ(M, P) ≃ₐ[ℂ] M where
 variable (M P) in
 @[simp]
 lemma toLinearEquiv_algEquiv : (algEquiv M P).toLinearEquiv = linearEquiv .. := rfl
-
-variable (M P) in
-/-- The canonical ⋆-algebra equivalence between `σ(M, P)` and `M`. -/
-@[simps!]
-noncomputable def starAlgEquiv : σ(M, P) ≃⋆ₐ[ℂ] M := .ofAlgEquiv (algEquiv M P) fun _ ↦ rfl
 
 end Unital
 
